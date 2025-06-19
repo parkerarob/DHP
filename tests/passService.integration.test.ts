@@ -1,13 +1,20 @@
 import { initializeTestEnvironment, RulesTestEnvironment } from '@firebase/rules-unit-testing';
 import * as admin from 'firebase-admin';
-import { PASSES_COLLECTION, EVENT_LOGS_COLLECTION } from '../src/models/firestoreModels';
+import {
+  PASSES_COLLECTION,
+  EVENT_LOGS_COLLECTION,
+  SETTINGS_COLLECTION,
+} from '../src/models/firestoreModels';
 
 let testEnv: RulesTestEnvironment;
 let PassService: typeof import('../src/services/passService').PassService;
 
 beforeAll(async () => {
-  testEnv = await initializeTestEnvironment({ projectId: 'dhp-test' });
   process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
+  testEnv = await initializeTestEnvironment({
+    projectId: 'dhp-test',
+    firestore: { host: '127.0.0.1', port: 8080 },
+  });
   process.env.GCLOUD_PROJECT = testEnv.projectId;
   ({ PassService } = await import('../src/services/passService'));
 });
@@ -80,5 +87,34 @@ test('closePass on closed pass logs invalid transition', async () => {
   await PassService.closePass(passId, 'actor1');
   await expect(PassService.closePass(passId, 'actor1')).rejects.toThrow('INVALID_TRANSITION');
   const logs = await getCollection(EVENT_LOGS_COLLECTION, 'eventType', 'INVALID_TRANSITION');
+  expect(logs.docs.length).toBe(1);
+});
+
+test('createPass rejects when emergency freeze is active', async () => {
+  await testEnv.withSecurityRulesDisabled(async (ctx) => {
+    await ctx.firestore().collection(SETTINGS_COLLECTION).doc('global').set({
+      id: 'global',
+      emergencyFreeze: true,
+      schemaVersion: 1,
+    });
+  });
+
+  await expect(
+    PassService.createPass('stu4', 'a', 'b', 'actor1')
+  ).rejects.toThrow('INVALID_TRANSITION');
+  const logs = await getCollection(
+    EVENT_LOGS_COLLECTION,
+    'eventType',
+    'INVALID_TRANSITION'
+  );
+  expect(logs.docs.length).toBe(1);
+});
+
+test('emergencyClaimPass closes pass and logs event', async () => {
+  const passId = await PassService.createPass('stu5', 'a', 'b', 'actor1');
+  await PassService.emergencyClaimPass(passId, 'staff1');
+  const passSnap = await getDoc(PASSES_COLLECTION, passId);
+  expect(passSnap.data()!.status).toBe('CLOSED');
+  const logs = await getCollection(EVENT_LOGS_COLLECTION, 'eventType', 'EMERGENCY_CLAIM');
   expect(logs.docs.length).toBe(1);
 });

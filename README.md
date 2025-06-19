@@ -21,6 +21,7 @@ Eagle Pass is a digital hall pass system designed for K-12 schools to track stud
 - Students close passes upon return to origin
 - Immutable event log for all state transitions
 - UI prevents invalid actions
+- System settings stored in `settings` collection (e.g., `emergencyFreeze` flag)
 - Dev dashboard for full system config and user management
 - Emergency freeze mode with claim functionality
 - Duration timers with notifications at 10min (student/teacher) and 20min (admin escalation)
