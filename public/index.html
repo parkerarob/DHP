@@ -39,6 +39,11 @@
     </style>
   </head>
   <body>
+    <div id="emergency-banner" style="display:none;background:red;color:white;padding:8px;text-align:center;">
+      Emergency freeze active!
+      <input id="claimId" placeholder="Pass ID" />
+      <button id="claimBtn">Claim</button>
+    </div>
     <div id="message">
       <h2>Welcome</h2>
       <h1>Firebase Hosting Setup Complete</h1>
@@ -50,6 +55,9 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
+        const banner = document.getElementById('emergency-banner');
+        const claimBtn = document.getElementById('claimBtn');
+        const claimId = document.getElementById('claimId');
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
         //
@@ -68,8 +76,8 @@
         try {
           let app = firebase.app();
           let features = [
-            'auth', 
-            'database', 
+            'auth',
+            'database',
             'firestore',
             'functions',
             'messaging', 
@@ -79,6 +87,30 @@
             'performance',
           ].filter(feature => typeof app[feature] === 'function');
           loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+
+          firebase
+            .firestore()
+            .doc('settings/global')
+            .onSnapshot((doc) => {
+              const flag = doc.exists && doc.data().emergencyFreeze;
+              banner.style.display = flag ? 'block' : 'none';
+            });
+
+          claimBtn.addEventListener('click', async () => {
+            const passId = (claimId as HTMLInputElement).value.trim();
+            if (!passId) return;
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert('Login required');
+              return;
+            }
+            const token = await user.getIdToken();
+            await fetch(`/api/emergency/claim/${passId}`, {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            alert('Pass claimed');
+          });
         } catch (e) {
           console.error(e);
           loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
