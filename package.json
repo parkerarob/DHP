@@ -1,0 +1,32 @@
+{
+  "name": "dhp",
+  "version": "1.0.0",
+  "description": "## Overview Eagle Pass is a digital hall pass system designed for K-12 schools to track student movement for safety and accountability, without enforcing attendance or behavior monitoring. The system provides staff with accurate, immutable data during both routine and emergency operations, while minimizing administrative complexity.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parkerarob/DHP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parkerarob/DHP/issues"
+  },
+  "homepage": "https://github.com/parkerarob/DHP#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.4.0",
+    "firebase-functions": "^6.3.2"
+  }
+}
