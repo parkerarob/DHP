@@ -23,13 +23,15 @@
   },
   "homepage": "https://github.com/parkerarob/DHP#readme",
   "devDependencies": {
-    "@types/node": "^24.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "@firebase/rules-unit-testing": "^4.0.1",
     "@types/jest": "^29.5.11",
+    "@types/node": "^24.0.3",
+    "@types/node-fetch": "^2.6.11",
+    "firebase-tools": "^14.7.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
-    "@types/node-fetch": "^2.6.11"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "firebase-admin": "^13.4.0",
