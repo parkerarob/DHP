@@ -11,11 +11,7 @@ let EmergencyService: typeof import('../src/services/emergencyService').Emergenc
 let PassService: typeof import('../src/services/passService').PassService;
 
 beforeAll(async () => {
-  process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
-  testEnv = await initializeTestEnvironment({
-    projectId: 'dhp-test',
-    firestore: { host: '127.0.0.1', port: 8080 },
-  });
+  testEnv = await initializeTestEnvironment({ projectId: 'dhp-test' });
   process.env.GCLOUD_PROJECT = testEnv.projectId;
   ({ EmergencyService } = await import('../src/services/emergencyService'));
   ({ PassService } = await import('../src/services/passService'));
@@ -23,7 +19,6 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testEnv.cleanup();
-  delete process.env.FIRESTORE_EMULATOR_HOST;
   delete process.env.GCLOUD_PROJECT;
   if (admin.apps.length) {
     await admin.app().delete();

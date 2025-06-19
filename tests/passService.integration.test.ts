@@ -10,18 +10,13 @@ let testEnv: RulesTestEnvironment;
 let PassService: typeof import('../src/services/passService').PassService;
 
 beforeAll(async () => {
-  process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
-  testEnv = await initializeTestEnvironment({
-    projectId: 'dhp-test',
-    firestore: { host: '127.0.0.1', port: 8080 },
-  });
+  testEnv = await initializeTestEnvironment({ projectId: 'dhp-test' });
   process.env.GCLOUD_PROJECT = testEnv.projectId;
   ({ PassService } = await import('../src/services/passService'));
 });
 
 afterAll(async () => {
   await testEnv.cleanup();
-  delete process.env.FIRESTORE_EMULATOR_HOST;
   delete process.env.GCLOUD_PROJECT;
   if (admin.apps.length) {
     admin.app().delete();
