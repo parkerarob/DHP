@@ -19,6 +19,10 @@
 | 2 | Firestore Data Models & Schema Definitions | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
 | 3 | Pass Lifecycle Engine | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
 | 4 | Emergency Freeze & Claim System | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
-| 5 | UI - Student Dashboard & Pass Creation | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
-
-
+| 5 | Notification Engine | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 6 | Data Ingestion Tooling (CSV Loader) | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 7 | Teacher Assist Pass Closure | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 8 | Lightweight Policy Engine Mock | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 9 | Security Rule Scaffold | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 10 | Monitoring & Observability Layer | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
+| 11 | Minimal Reporting Interfaces | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
