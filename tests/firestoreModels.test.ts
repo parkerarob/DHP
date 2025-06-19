@@ -7,6 +7,8 @@ import {
   GROUPS_COLLECTION,
   AUTONOMY_MATRIX_COLLECTION,
   RESTRICTIONS_COLLECTION,
+  SETTINGS_COLLECTION,
+  SystemSettings,
   User,
   VersionedDocument,
 } from '../src/models/firestoreModels';
@@ -20,6 +22,7 @@ describe('firestoreModels', () => {
     expect(GROUPS_COLLECTION).toBe('groups');
     expect(AUTONOMY_MATRIX_COLLECTION).toBe('autonomy-matrix');
     expect(RESTRICTIONS_COLLECTION).toBe('restrictions');
+    expect(SETTINGS_COLLECTION).toBe('settings');
   });
 
   it('includes a current schema version', () => {
@@ -34,5 +37,14 @@ describe('firestoreModels', () => {
       schemaVersion: CURRENT_SCHEMA_VERSION,
     };
     expect(user.uid).toBe('u1');
+  });
+
+  it('allows creating typed system settings objects', () => {
+    const settings: SystemSettings & VersionedDocument = {
+      id: 'global',
+      emergencyFreeze: false,
+      schemaVersion: CURRENT_SCHEMA_VERSION,
+    };
+    expect(settings.emergencyFreeze).toBe(false);
   });
 });
