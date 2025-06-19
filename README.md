@@ -65,7 +65,7 @@ Eagle Pass is a digital hall pass system designed for K-12 schools to track stud
 - Full test coverage required for all state transitions and security rules
 
 ## Contribution & Governance
-- All contributions must follow the immutable task queue and governance protocols (see `docs/ai-governance/` and `docs/operator-rules.md.md`)
+- All contributions must follow the immutable task queue and governance protocols (see `docs/ai-governance/` and `docs/operator-rules.md`)
 - Scope changes require formal review and PRD update
 - Operators and contributors must log all actions in the Execution Ledger
 
@@ -83,4 +83,4 @@ Eagle Pass is a digital hall pass system designed for K-12 schools to track stud
 4. Use the provided task queue to guide all development
 
 ---
-For questions or governance issues, refer to the escalation protocols in `docs/ai-governance/ai-governance.md` and `docs/ai-governance/ai-operartor-sop.md`. 
+For questions or governance issues, refer to the escalation protocols in `docs/ai-governance/ai-governance.md` and `docs/ai-governance/ai-operator-sop.md`. 
