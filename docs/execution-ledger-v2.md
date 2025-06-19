@@ -18,7 +18,7 @@
 | 1 | Authentication & Authorization | ✅ Completed | 2024-06-18T00:00Z | dev | Jane Doe | None | None | Basic auth flows implemented and tested. |
 | 2 | Firestore Data Models & Schema Definitions | ✅ Completed | 2024-06-17T00:00Z | dev | Jane Doe | None | None | Firestore models and schema scaffolds implemented |
 | 3 | Pass Lifecycle Engine | ✅ Completed | 2024-06-18T00:00Z | dev | Jane Doe | None | None | Implemented and tested pass lifecycle engine |
-| 4 | Emergency Freeze & Claim System | 🚧 In Progress | 2024-06-19T00:00Z | dev | Jane Doe | None | None | Data model and global toggle scaffolded |
+| 4 | Emergency Freeze & Claim System | 🚧 In Progress | 2024-06-19T00:00Z | dev | Jane Doe | None | None | Pass lifecycle integration with freeze flag |
 | 5 | Notification Engine | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
 | 6 | Data Ingestion Tooling (CSV Loader) | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
 | 7 | Teacher Assist Pass Closure | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
