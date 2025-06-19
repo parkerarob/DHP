@@ -2,6 +2,13 @@ import * as admin from 'firebase-admin';
 import { OAuth2Client } from 'google-auth-library';
 import fetch from 'node-fetch';
 
+const ALLOWED_DOMAINS = ['nhcs.net', 'student.nhcs.net'];
+
+function isAllowedDomain(email: string): boolean {
+  const domain = email.split('@')[1];
+  return ALLOWED_DOMAINS.includes(domain);
+}
+
 // Initialize Firebase Admin SDK if not already initialized
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -21,6 +28,9 @@ export class AuthService {
         throw new Error('Invalid Google token payload');
       }
       const email = payload.email;
+      if (!isAllowedDomain(email)) {
+        throw new Error('Unauthorized domain');
+      }
       try {
         return await admin.auth().getUserByEmail(email);
       } catch (err: any) {
@@ -35,7 +45,10 @@ export class AuthService {
         }
         throw err;
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error instanceof Error && error.message === 'Unauthorized domain') {
+        throw error;
+      }
       throw new Error('Invalid Google ID token');
     }
   }
@@ -46,6 +59,9 @@ export class AuthService {
    * @param password User password
    */
   static async signInWithEmail(email: string, password: string): Promise<admin.auth.UserRecord> {
+    if (!isAllowedDomain(email)) {
+      throw new Error('Unauthorized domain');
+    }
     const apiKey = process.env.FIREBASE_API_KEY;
     if (!apiKey) {
       throw new Error('Missing Firebase API key');
@@ -86,7 +102,6 @@ export class AuthService {
    * @param uid User ID
    */
   static async signOut(uid: string): Promise<void> {
-    // TODO: Invalidate user session if needed
-    throw new Error('Not implemented');
+    await admin.auth().revokeRefreshTokens(uid);
   }
-} 
+}
