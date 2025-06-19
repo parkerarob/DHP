@@ -9,9 +9,11 @@ import {
   RESTRICTIONS_COLLECTION,
   SETTINGS_COLLECTION,
   SystemSettings,
+  EventLog,
   User,
   VersionedDocument,
 } from '../src/models/firestoreModels';
+import * as admin from 'firebase-admin';
 
 describe('firestoreModels', () => {
   it('exposes collection name constants', () => {
@@ -46,5 +48,17 @@ describe('firestoreModels', () => {
       schemaVersion: CURRENT_SCHEMA_VERSION,
     };
     expect(settings.emergencyFreeze).toBe(false);
+  });
+
+  it('allows creating typed event log objects with new types', () => {
+    const log: EventLog & VersionedDocument = {
+      eventId: 'e1',
+      passId: 'p1',
+      actorId: 'a1',
+      eventType: 'EMERGENCY_CLAIM',
+      timestamp: admin.firestore.Timestamp.now(),
+      schemaVersion: CURRENT_SCHEMA_VERSION,
+    };
+    expect(log.eventType).toBe('EMERGENCY_CLAIM');
   });
 });

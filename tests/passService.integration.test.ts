@@ -1,6 +1,10 @@
 import { initializeTestEnvironment, RulesTestEnvironment } from '@firebase/rules-unit-testing';
 import * as admin from 'firebase-admin';
-import { PASSES_COLLECTION, EVENT_LOGS_COLLECTION } from '../src/models/firestoreModels';
+import {
+  PASSES_COLLECTION,
+  EVENT_LOGS_COLLECTION,
+  SETTINGS_COLLECTION,
+} from '../src/models/firestoreModels';
 
 let testEnv: RulesTestEnvironment;
 let PassService: typeof import('../src/services/passService').PassService;
@@ -83,5 +87,34 @@ test('closePass on closed pass logs invalid transition', async () => {
   await PassService.closePass(passId, 'actor1');
   await expect(PassService.closePass(passId, 'actor1')).rejects.toThrow('INVALID_TRANSITION');
   const logs = await getCollection(EVENT_LOGS_COLLECTION, 'eventType', 'INVALID_TRANSITION');
+  expect(logs.docs.length).toBe(1);
+});
+
+test('createPass rejects when emergency freeze is active', async () => {
+  await testEnv.withSecurityRulesDisabled(async (ctx) => {
+    await ctx.firestore().collection(SETTINGS_COLLECTION).doc('global').set({
+      id: 'global',
+      emergencyFreeze: true,
+      schemaVersion: 1,
+    });
+  });
+
+  await expect(
+    PassService.createPass('stu4', 'a', 'b', 'actor1')
+  ).rejects.toThrow('INVALID_TRANSITION');
+  const logs = await getCollection(
+    EVENT_LOGS_COLLECTION,
+    'eventType',
+    'INVALID_TRANSITION'
+  );
+  expect(logs.docs.length).toBe(1);
+});
+
+test('emergencyClaimPass closes pass and logs event', async () => {
+  const passId = await PassService.createPass('stu5', 'a', 'b', 'actor1');
+  await PassService.emergencyClaimPass(passId, 'staff1');
+  const passSnap = await getDoc(PASSES_COLLECTION, passId);
+  expect(passSnap.data()!.status).toBe('CLOSED');
+  const logs = await getCollection(EVENT_LOGS_COLLECTION, 'eventType', 'EMERGENCY_CLAIM');
   expect(logs.docs.length).toBe(1);
 });

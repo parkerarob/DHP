@@ -46,6 +46,7 @@ export class EmergencyService {
 
   static async emergencyClaimPass(passId: string, actorId: string): Promise<void> {
     try {
+      await PassService.emergencyClaimPass(passId, actorId);
       await PassService.closePass(passId, actorId);
     } catch {
       throw new Error('INVALID_TRANSITION');

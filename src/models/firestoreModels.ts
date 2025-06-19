@@ -56,7 +56,8 @@ export interface EventLog extends VersionedDocument {
     | 'CLOSE_PASS'
     | 'INVALID_TRANSITION'
     | 'EMERGENCY_ACTIVATED'
-    | 'EMERGENCY_DEACTIVATED';
+    | 'EMERGENCY_DEACTIVATED'
+    | 'EMERGENCY_CLAIM';
   timestamp: Timestamp;
   metadata?: Record<string, unknown>;
 }

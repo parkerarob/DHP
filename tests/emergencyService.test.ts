@@ -69,4 +69,6 @@ test('emergencyClaimPass closes an open pass', async () => {
   await EmergencyService.emergencyClaimPass(passId, 'staff1');
   const passSnap = await getDoc(PASSES_COLLECTION, passId);
   expect(passSnap.data()?.status).toBe('CLOSED');
+  const logs = await getCollection(EVENT_LOGS_COLLECTION);
+  expect(logs.docs[0].data().eventType).toBe('EMERGENCY_CLAIM');
 });
