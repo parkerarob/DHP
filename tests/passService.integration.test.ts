@@ -6,8 +6,11 @@ let testEnv: RulesTestEnvironment;
 let PassService: typeof import('../src/services/passService').PassService;
 
 beforeAll(async () => {
-  testEnv = await initializeTestEnvironment({ projectId: 'dhp-test' });
   process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
+  testEnv = await initializeTestEnvironment({
+    projectId: 'dhp-test',
+    firestore: { host: '127.0.0.1', port: 8080 },
+  });
   process.env.GCLOUD_PROJECT = testEnv.projectId;
   ({ PassService } = await import('../src/services/passService'));
 });
