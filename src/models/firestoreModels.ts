@@ -21,6 +21,7 @@ export const EVENT_LOGS_COLLECTION = 'event-logs';
 export const GROUPS_COLLECTION = 'groups';
 export const AUTONOMY_MATRIX_COLLECTION = 'autonomy-matrix';
 export const RESTRICTIONS_COLLECTION = 'restrictions';
+export const SETTINGS_COLLECTION = 'settings';
 
 export interface User extends VersionedDocument {
   uid: string;
@@ -50,7 +51,13 @@ export interface EventLog extends VersionedDocument {
   eventId: string;
   passId?: string;
   actorId: string;
-  eventType: string;
+  eventType:
+    | 'CREATE_PASS'
+    | 'CLOSE_PASS'
+    | 'INVALID_TRANSITION'
+    | 'EMERGENCY_ACTIVATED'
+    | 'EMERGENCY_DEACTIVATED'
+    | 'EMERGENCY_CLAIM';
   timestamp: Timestamp;
   metadata?: Record<string, unknown>;
 }
@@ -75,4 +82,9 @@ export interface Restriction extends VersionedDocument {
   locationId?: string;
   reason: string;
   expiresAt?: Timestamp;
+}
+
+export interface SystemSettings extends VersionedDocument {
+  id: string;
+  emergencyFreeze: boolean;
 }
