@@ -1,4 +1,6 @@
 import * as admin from 'firebase-admin';
+import { OAuth2Client } from 'google-auth-library';
+import fetch from 'node-fetch';
 
 // Initialize Firebase Admin SDK if not already initialized
 if (!admin.apps.length) {
@@ -11,8 +13,31 @@ export class AuthService {
    * @param idToken Google ID token from client
    */
   static async signInWithGoogle(idToken: string): Promise<admin.auth.UserRecord> {
-    // TODO: Verify Google ID token and return user record
-    throw new Error('Not implemented');
+    const client = new OAuth2Client();
+    try {
+      const ticket = await client.verifyIdToken({ idToken });
+      const payload = ticket.getPayload();
+      if (!payload || !payload.email) {
+        throw new Error('Invalid Google token payload');
+      }
+      const email = payload.email;
+      try {
+        return await admin.auth().getUserByEmail(email);
+      } catch (err: any) {
+        if (err.code === 'auth/user-not-found') {
+          return await admin.auth().createUser({
+            uid: payload.sub,
+            email,
+            displayName: payload.name,
+            photoURL: payload.picture,
+            emailVerified: payload.email_verified,
+          });
+        }
+        throw err;
+      }
+    } catch (error) {
+      throw new Error('Invalid Google ID token');
+    }
   }
 
   /**
@@ -21,8 +46,31 @@ export class AuthService {
    * @param password User password
    */
   static async signInWithEmail(email: string, password: string): Promise<admin.auth.UserRecord> {
-    // TODO: Authenticate with Firebase Auth and return user record
-    throw new Error('Not implemented');
+    const apiKey = process.env.FIREBASE_API_KEY;
+    if (!apiKey) {
+      throw new Error('Missing Firebase API key');
+    }
+    try {
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, returnSecureToken: true }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error?.message || 'Authentication failed');
+      }
+      const decoded = await admin.auth().verifyIdToken(data.idToken);
+      return await admin.auth().getUser(decoded.uid);
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
+      throw new Error('Authentication failed');
+    }
   }
 
   /**
