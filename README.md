@@ -82,6 +82,8 @@ Eagle Pass is a digital hall pass system designed for K-12 schools to track stud
 2. Review the PRD and build queue for current scope
 3. Follow the operator SOP for all build and deployment actions
 4. Use the provided task queue to guide all development
+5. Copy `.env.example` to `.env` and add your Firebase config values
+6. Run `npm ci` then `npm test` to verify setup
 
 ---
 For questions or governance issues, refer to the escalation protocols in `docs/ai-governance/ai-governance.md` and `docs/ai-governance/ai-operator-sop.md`. 
