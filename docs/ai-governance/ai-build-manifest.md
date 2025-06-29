@@ -24,6 +24,7 @@ Captures full traceability for AI-generated build outputs.
 | ------- | --------- | ------ | ---------------------- | ----------- | -------------- | ------------ |
 | 0 | Project Bootstrap Initialization | ✅ Completed | 2025-06-16T12:34Z | ✅ | Fully compliant |
 | 1 | Authentication & Authorization | ✅ Completed | 2025-06-17T10:21Z | ✅ | Minor code style fix |
+| 2 | Firestore Data Models & Schema Definitions | ✅ Completed | 2024-06-17T00:00Z | ✅ | Subtasks 2.1–2.4 complete |
 
 When you log new tasks, fill in “Environment” (e.g., dev, test, prod).
 *Repeat for all tasks.*
