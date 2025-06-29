@@ -16,7 +16,7 @@
 |------|-----------|--------|-----------|-------------|----------|----------------|--------------------|-------|
 | 0 | Project Bootstrap Initialization | ✅ Completed | 2025-06-16T12:34Z | dev | Jane Doe | None | None | Project scaffold completed. |
 | 1 | Authentication & Authorization | ✅ Completed | 2024-06-18T00:00Z | dev | Jane Doe | None | None | Basic auth flows implemented and tested. |
-| 2 | Firestore Data Models & Schema Definitions | ✅ Completed | 2024-06-17T00:00Z | dev | Jane Doe | None | None | Firestore models and schema scaffolds implemented |
+| 2 | Firestore Data Models & Schema Definitions | ✅ Completed | 2024-06-17T00:00Z | dev | Jane Doe | None | None | Subtasks 2.1–2.4 completed: collection constants, interfaces, kebab-case names, versioning scaffold |
 | 3 | Pass Lifecycle Engine | ✅ Completed | 2024-06-18T00:00Z | dev | Jane Doe | None | None | Implemented and tested pass lifecycle engine |
 | 4 | Emergency Freeze & Claim System | ✅ Completed | 2025-06-19T00:00Z | dev | Jane Doe | None | None | Backend and UI freeze integration |
 | 5 | Notification Engine | ⬜ Not Started | — | dev | Jane Doe | None | None | Pending implementation |
